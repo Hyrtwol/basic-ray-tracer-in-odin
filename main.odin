@@ -36,18 +36,18 @@ import    "core:time"
 ASSEMBLY_OPTIMIZATIONS :: false
 
 // How many rays are cast to estimate the value of a pixel.
-MULTISAMPLE_NUMBER :: 10
+MULTISAMPLE_NUMBER :: 10*5
 
 // Core camera / rendering properties.
-HIDTH    :: 1 * 270           // Height.
-WIDTH    :: 1 * 480
+HIDTH    :: 50           // Height.
+WIDTH    :: 80
 NPIXELS  :: WIDTH * HIDTH
-ORIGIN   :: Point30{13,2,3,0}
+ORIGIN   := Point30{13,2,3,0}
 LOOKAT   :: Point30{0,0,0,0}
 VUP      :: Vec30{0,1,0,0}    // Used to orient image.
 ZOOM     :: cast(f32) 5.5
 APERTURE :: 0.03              // When 0, no defocus blur.
-SPHERE_GRID_DIM :: 21
+SPHERE_GRID_DIM :: 7 // 21
 
 ASPECT_RATIO :: f32(WIDTH) / f32(HIDTH)
 
@@ -123,12 +123,14 @@ main :: proc() {
     gb_sphere_array[3] = SPHERE3
 
     // Randomly generate many smaller spheres of varying position and material.
-    SMALL_RADIUS :: f32(0.2)
+    SMALL_RADIUS :: f32(0.3)
     for a in 0..<SPHERE_GRID_DIM {
         for b in 0..<SPHERE_GRID_DIM {
             xpos := f32(a) + 0.2 + 0.6 * rm.float32()
             zpos := f32(b) + 0.2 + 0.6 * rm.float32()
-            possible_center := Point30{xpos - SPHERE_GRID_DIM / 2, SMALL_RADIUS, zpos - SPHERE_GRID_DIM / 2,0}
+            xpos *= 1.5
+            zpos *= 1.5
+            possible_center := Point30{xpos - SPHERE_GRID_DIM / 2, SMALL_RADIUS, zpos - SPHERE_GRID_DIM / 2, 0}
             // Make sure smaller spheres do not collide with large spheres.
             no_collisions := true
             for i in 1..<4 {
@@ -169,8 +171,16 @@ main :: proc() {
     t1 := time.now()
     pixels := make([] Pixel, NPIXELS)
 
+    // put_pixel :: proc(x, y: i32, p : Pixel) {
+    //     pixels[WIDTH * y + x] = pixel
+    // }
+
     // Main render procedure! Contained in render.odin
-    render_image(pixels)
+
+    for i in 0..<20 {
+        ORIGIN = Point30{13,2,3+f32(i)*0.5, 0}
+        render_image(pixels)
+    }
     
     t2 := time.now()
     f.println("Time diff:", time.diff(t1,t2))
