@@ -1,0 +1,96 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "odin run",
+			"type": "process",
+			"command": "odin",
+			"args": [
+				"run",
+				"${relativeFileDirname}",
+				"-o:speed"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": "**/*.odin"
+			}
+		},
+		{
+			"label": "odin build",
+			"type": "process",
+			"command": "odin",
+			"args": [
+				"build",
+				"${relativeFileDirname}",
+				"-o:speed"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"label": "odin test",
+			"type": "shell",
+			"command": "odin",
+			"args": [
+				"test",
+				"${relativeFileDirname}"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"label": "odin debug build",
+			"type": "process",
+			"command": "odin",
+			"args": [
+				"build",
+				"${relativeFileDirname}",
+				"-debug"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"label": "odin check",
+			"type": "process",
+			"command": "odin",
+			"args": [
+				"check",
+				"${relativeFileDirname}",
+				"-no-entry-point",
+				"-vet"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"label": "odin doc",
+			"type": "shell",
+			"command": "odin",
+			"args": [
+				"doc",
+				"${relativeFileDirname}",
+				">",
+				"${fileDirnameBasename}.txt"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		}
+	]
+}
